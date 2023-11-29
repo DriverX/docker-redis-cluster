@@ -24,3 +24,11 @@ bash:
 
 cli:
 	docker-compose exec redis-cluster /redis/src/redis-cli -p 7000
+
+.PHONY: build-image
+build-vendor-image:
+ifeq (${REDIS_VERSION},)
+	@echo "No redis version provided" >&2; \
+	exit 1
+endif
+	@docker build -t "driverx88/redis-cluster:${REDIS_VERSION}" --build-arg "redis_version=${REDIS_VERSION}" .
